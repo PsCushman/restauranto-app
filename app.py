@@ -3,10 +3,15 @@
 #################################################
 
 import requests
+import secrets
 from flask import Flask, render_template, request, session, redirect, url_for
 import requests
+from api_keys import yelp_key, google_maps_key
 
 app = Flask(__name__)
+
+# Set the secret key for sessions
+app.secret_key = secrets.token_hex(16)
 
 # Set up the Yelp API endpoint URL
 base_url = 'https://api.yelp.com/v3/businesses/search'
@@ -67,9 +72,20 @@ def geocode_address(address):
 def home():
     return render_template('index.html')
 
+@app.route('/restaurant_info', methods=['GET', 'POST'])
+def restaurant_info():
+    if request.method == 'POST':
+        address = request.form.get('address')
+        if address:
+            session['address'] = address
+            return redirect(url_for('restaurant_info'))
+        else:
+            return 'Please provide an address.'
+    return render_template('index.html')
+
 @app.route('/restaurant_names')
-def get_restaurant_names():
-    address = request.args.get('address')
+def restaurant_names():
+    address = session.get('address')
 
     if address:
         location = geocode_address(address)
@@ -83,15 +99,16 @@ def get_restaurant_names():
 
         if restaurants:
             restaurant_names = [restaurant.get('name') for restaurant in restaurants]
-            return render_template('restaurant_names.html', restaurant_names=restaurant_names)
+            restaurant_count = len(restaurant_names)  # Calculate the count
+            return render_template('restaurant_names.html', restaurant_names=restaurant_names, restaurant_count=restaurant_count)  # Pass the count to the template
         else:
-            return 'No restaurants found within the specified radius.'
+            return 'No restaurants found.'
     else:
-        return 'Please provide an address.'
+        return redirect(url_for('restaurant_info'))
 
 @app.route('/restaurant_types')
-def get_restaurant_types():
-    address = request.args.get('address')
+def restaurant_types():
+    address = session.get('address')
 
     if address:
         location = geocode_address(address)
@@ -104,23 +121,17 @@ def get_restaurant_types():
         restaurants = fetch_restaurants(latitude, longitude)
 
         if restaurants:
-            restaurant_counts = {}
-            for restaurant in restaurants:
-                categories = restaurant.get('categories', [])
-                for category in categories:
-                    title = category.get('title')
-                    restaurant_counts[title] = restaurant_counts.get(title, 0) + 1
+            restaurant_types = [(restaurant.get('categories')[0]['title'], 1) for restaurant in restaurants if restaurant.get('categories')]
+            restaurant_types = list(set(restaurant_types))
 
-            return render_template('restaurant_types.html', restaurant_types=restaurant_counts)
-        else:
-            return 'No restaurants found.'
+            return render_template('restaurant_types.html', restaurant_types=restaurant_types)
     else:
-        return 'Please provide an address.'
+        return redirect(url_for('restaurant_info'))
     
 @app.route('/avg_rating')
-def get_avg_rating():
-    address = request.args.get('address')
-
+def avg_rating():
+    address = session.get('address')
+    
     if address:
         location = geocode_address(address)
 
@@ -143,13 +154,10 @@ def get_avg_rating():
 
             if total_restaurants > 0:
                 avg_rating = total_rating / total_restaurants
-                return render_template('avg_rating.html', avg_rating=avg_rating)
-            else:
-                return 'No ratings available for restaurants in the specified area.'
-        else:
-            return 'No restaurants found.'
+            
+            return render_template('avg_rating.html', avg_rating=avg_rating, address=address)
     else:
-        return 'Please provide an address.'
+        return redirect(url_for('restaurant_info'))
 
 # Run the application
 if __name__ == "__main__":

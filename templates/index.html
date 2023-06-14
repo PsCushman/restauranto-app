@@ -23,27 +23,36 @@
             margin-top: 0;
         }
         
-        .input-box {
-            margin-top: 30px;
-            font-size: 16px;
-            padding: 5px;
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #d4af37;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
             border-radius: 5px;
-            border: 1px solid #777;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .input-box {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+            max-width: 100%;
         }
         
         .submit-button {
-            margin-top: 10px;
-            font-size: 16px;
             padding: 10px 20px;
-            border-radius: 5px;
             background-color: #d4af37;
             color: #fff;
-            border: 2px solid #8B4513;
+            border-radius: 5px;
+            border: none;
             cursor: pointer;
-        }
-        
-        .submit-button:hover {
-            background-color: #b38825;
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,10 +62,14 @@
 <body>
     <h1>Welcome to the Restauranto App!</h1>
     <p>Please enter an address to get started:</p>
-    <form action="/restaurant_names" method="GET">
+    <form action="/restaurant_info" method="POST">
         <input type="text" name="address" class="input-box" placeholder="Enter an address" required>
         <br>
-        <input type="submit" value="Get Restaurant Names" class="submit-button">
+        <input type="submit" value="Get Restaurant Information" class="submit-button">
     </form>
+    <p>Choose one of the following options:</p>
+    <a href="{{ url_for('restaurant_names') }}" class="button">Restaurant Names</a>
+    <a href="{{ url_for('restaurant_types') }}" class="button">Restaurant Types</a>
+    <a href="{{ url_for('avg_rating') }}" class="button">Average Rating</a> 
 </body>
 </html>

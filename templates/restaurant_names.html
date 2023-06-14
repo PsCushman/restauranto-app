@@ -1,18 +1,60 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Restaurant Names</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 30px;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+        
+        .count {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        
+        form {
+            margin-top: 20px;
+        }
+        
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1>Restaurant Names</h1>
+    <p class="count">Count: {{ restaurant_count }}</p>
     <ul>
         {% for name in restaurant_names %}
         <li>{{ name }}</li>
         {% endfor %}
     </ul>
-    <form action="{{ url_for('get_restaurant_types') }}" method="GET">
-        <input type="hidden" name="address" value="{{ address }}">
-        <button type="submit">Next</button>
-    </form>
 </body>
 </html>

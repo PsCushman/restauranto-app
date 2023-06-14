@@ -2,9 +2,27 @@
 <html>
 <head>
     <title>Average Rating</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
     <h1>Average Rating</h1>
-    <p>The average rating is: {{ avg_rating }}</p>
+    <p>For {{ address }}, the average rating is: {{ avg_rating }}</p>
 </body>
 </html>

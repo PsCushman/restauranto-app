@@ -2,12 +2,44 @@
 <html>
 <head>
     <title>Restaurant Types</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        li {
+            margin: 10px;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            color: #d4af37;
+        }
+    </style>
 </head>
 <body>
     <h1>Restaurant Types</h1>
     <ul>
-        {% for type, count in restaurant_types.items() %}
-        <li><a href="{{ url_for('avg_rating') }}">{{ type }} ({{ count }})</a></li>
+        {% for type, count in restaurant_types %}
+        <li>{{ type }} ({{ count }})</li>
         {% endfor %}
     </ul>
 </body>
