@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Types</title>
+</head>
+<body>
+    <h1>Restaurant Types</h1>
+    <ul>
+        {% for type, count in restaurant_types.items() %}
+        <li><a href="{{ url_for('avg_rating') }}">{{ type }} ({{ count }})</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

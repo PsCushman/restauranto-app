@@ -1,0 +1,18 @@
+<<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Names</title>
+</head>
+<body>
+    <h1>Restaurant Names</h1>
+    <ul>
+        {% for name in restaurant_names %}
+        <li>{{ name }}</li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('get_restaurant_types') }}" method="GET">
+        <input type="hidden" name="address" value="{{ address }}">
+        <button type="submit">Next</button>
+    </form>
+</body>
+</html>

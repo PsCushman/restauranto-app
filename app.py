@@ -2,125 +2,154 @@
 # Flask Setup
 #################################################
 
+import requests
+from flask import Flask, render_template, request, session, redirect, url_for
+import requests
+
 app = Flask(__name__)
+
+# Set up the Yelp API endpoint URL
+base_url = 'https://api.yelp.com/v3/businesses/search'
+
+# Set up the Google Geocoding API endpoint URL
+geocoding_url = 'https://maps.googleapis.com/maps/api/geocode/json'
 
 #################################################
 # Flask Routes
 #################################################
 
+def fetch_restaurants(latitude, longitude):
+    headers = {
+        'Authorization': f'Bearer {yelp_key}'
+    }
+
+    params = {
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': 1000,
+        'categories': 'restaurants',
+        'limit': 50
+    }
+
+    response = requests.get(base_url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        restaurant_data = response.json()
+        return restaurant_data.get('businesses', [])
+    else:
+        print('Error occurred while fetching restaurant data.')
+        return []
+
+def geocode_address(address):
+    params = {
+        'address': address,
+        'key': google_maps_key
+    }
+
+    response = requests.get(geocoding_url, params=params)
+
+    if response.status_code == 200:
+        geocoding_data = response.json()
+
+        results = geocoding_data.get('results', [])
+
+        if results:
+            location = results[0].get('geometry', {}).get('location')
+            latitude = location.get('lat')
+            longitude = location.get('lng')
+            return latitude, longitude
+        else:
+            return None
+    else:
+        return None
+
 @app.route('/')
 def home():
-    return '''
-        <html>
-        <head>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    text-align: left;
-                    background-color: #f2f2f2;
-                }
+    return render_template('index.html')
 
-                h1 {
-                    font-family: 'Hanalei Fill', cursive;
-                    font-size: 40px;
-                    color: #d4af37;
-                    margin-top: 50px;
-                    text-align: center;
-                    text-shadow: 2px 2px #8B4513;
-                }
+@app.route('/restaurant_names')
+def get_restaurant_names():
+    address = request.args.get('address')
 
-                p {
-                    color: #777;
-                    font-size: 18px;
-                    margin-top: 0; 
-                }
+    if address:
+        location = geocode_address(address)
 
-                .route {
-                    margin-top: 30px;
-                    display: inline-block;
-                    background-color: #d4af37;
-                    color: #fff;
-                    padding: 10px 20px;
-                    border-radius: 5px;
-                    text-decoration: none;
-                    font-weight: bold;
-                    font-family: cursive;
-                    border: 2px solid #8B4513;
-                    box-shadow: 2px 2px 4px #8B4513;
-                }
+        if location:
+            latitude, longitude = location
+        else:
+            return 'Error occurred while geocoding the address.'
 
-                .route:hover {
-                    background-color: #b38825;
-                }
+        restaurants = fetch_restaurants(latitude, longitude)
 
-                .directions {
-                    color: #777;
-                    font-size: 16px;
-                    margin-top: 10px;
-                }
+        if restaurants:
+            restaurant_names = [restaurant.get('name') for restaurant in restaurants]
+            return render_template('restaurant_names.html', restaurant_names=restaurant_names)
+        else:
+            return 'No restaurants found within the specified radius.'
+    else:
+        return 'Please provide an address.'
 
-                .input-box {
-                    margin-top: 10px;
-                    font-size: 16px;
-                    padding: 5px;
-                    border-radius: 5px;
-                    border: 1px solid #777;
-                }
-            </style>
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap" rel="stylesheet">
-        </head>
-        <body>
-            <h1>Welcome to the Restauranto App!</h1>
-            <p>Available Routes:</p>
-            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
-            <p class="directions">Returns precipitation data for 12 months (2016-08-23 to 2017-08-23).</p>
-            <br>
-            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a><br>
-            <p class="directions">Returns a list of stations.</p>
-            <br>
-            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a><br>
-            <p class="directions">Returns temperature observations for the most active station in the last 12 months.</p>
-            <br>
-            <form action="/api/v1.0/start" method="get">
-                <label for="start-date">Start Date:</label>
-                <input class="input-box" type="text" id="start-date" name="start-date" placeholder="YYYY-MM-DD"><br>
-                <input class="route" type="submit" value="Submit">
-            </form>
-            <p class="directions">Returns the minimum, average, and maximum temperatures after a start date entered in the YYYY-MM-DD format.</p>
-            <br>
-            <form action="/api/v1.0/start-end" method="get">
-                <label for="start-date">Start Date:</label>
-                <input class="input-box" type="text" id="start-date" name="start-date" placeholder="YYYY-MM-DD"><br>
-                <label for="end-date">End Date:</label>
-                <input class="input-box" type="text" id="end-date" name="end-date" placeholder="YYYY-MM-DD"><br>
-                <input class="route" type="submit" value="Submit">
-            </form>
-            <p class="directions">Returns the minimum, average, and maximum temperatures between start and end dates entered in the YYYY-MM-DD format</p>
-        </body>
-        </html>
-    '''
+@app.route('/restaurant_types')
+def get_restaurant_types():
+    address = request.args.get('address')
 
-@app.route("/api/v1.0/precipitation")
-def precipitation():
+    if address:
+        location = geocode_address(address)
 
-# Define the stations route
-@app.route("/api/v1.0/stations")
+        if location:
+            latitude, longitude = location
+        else:
+            return 'Error occurred while geocoding the address.'
 
-# Define the tobs route
-@app.route("/api/v1.0/tobs")
-def tobs():
+        restaurants = fetch_restaurants(latitude, longitude)
 
-# Define the start route
-@app.route("/api/v1.0/<start>")
-def start(start):
+        if restaurants:
+            restaurant_counts = {}
+            for restaurant in restaurants:
+                categories = restaurant.get('categories', [])
+                for category in categories:
+                    title = category.get('title')
+                    restaurant_counts[title] = restaurant_counts.get(title, 0) + 1
+
+            return render_template('restaurant_types.html', restaurant_types=restaurant_counts)
+        else:
+            return 'No restaurants found.'
+    else:
+        return 'Please provide an address.'
     
+@app.route('/avg_rating')
+def get_avg_rating():
+    address = request.args.get('address')
 
-# Define the start-end route
-@app.route("/api/v1.0/<start>/<end>")
-def start_end(start, end):
-    
+    if address:
+        location = geocode_address(address)
+
+        if location:
+            latitude, longitude = location
+        else:
+            return 'Error occurred while geocoding the address.'
+
+        restaurants = fetch_restaurants(latitude, longitude)
+
+        if restaurants:
+            total_rating = 0
+            total_restaurants = 0
+
+            for restaurant in restaurants:
+                rating = restaurant.get('rating')
+                if rating:
+                    total_rating += rating
+                    total_restaurants += 1
+
+            if total_restaurants > 0:
+                avg_rating = total_rating / total_restaurants
+                return render_template('avg_rating.html', avg_rating=avg_rating)
+            else:
+                return 'No ratings available for restaurants in the specified area.'
+        else:
+            return 'No restaurants found.'
+    else:
+        return 'Please provide an address.'
 
 # Run the application
 if __name__ == "__main__":
