@@ -1,0 +1,72 @@
+.jumbotron {
+    background-color: #7aa5d0;
+    padding: 2rem;
+    border-radius: 0.1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Adjust the width as needed */
+    margin: 0 auto; /* Center the jumbotron horizontally */
+  }
+  
+  .jumbotron h1 {
+    font-family: 'Concert One', cursive;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .jumbotron .lead {
+    font-family: 'Concert One', cursive;
+    font-size: 1.5rem;
+    color: #777;
+  }
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+h1 {
+    font-family: 'Concert One', cursive;
+    font-size: 40px;
+    color: #161614;
+    margin-top: 50px;
+}
+
+p {
+    color: #777;
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1b1a18;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.input-box {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 300px;
+    max-width: 100%;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #21201d;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
