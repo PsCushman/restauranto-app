@@ -6,7 +6,7 @@ A little app to help make big decisions for aspiring restaurateurs.
 ## Deployment
  run app.py and open local host.
  Enter and address and explore.
- You will need to replace the api keys 
+ You will need to use your own api keys (Yelp, GoogleMaps Geocoding, GoogleMaps Java Script API)
  
-##Description and Notes
+## Description and Notes
 This app returns restaurnt information for resturants in a 1 km radius from the address provided. Coming soon... Commercial property information and interactive maps.
