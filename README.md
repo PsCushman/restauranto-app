@@ -1,4 +1,4 @@
-![Screen Shot 2023-06-22 at 10 58 49 AM](https://github.com/PsCushman/restauranto-app/assets/122395437/7d8a2221-ba66-44fe-9d5d-9d1f03eecd31)
+![Screen Shot 2023-06-23 at 10 25 47 AM](https://github.com/PsCushman/restauranto-app/assets/122395437/85db2a89-88c5-433e-bf6d-d5bc1c4bba81)
 
 # The Restauranto App
 A little app to help make big decisions for aspiring restaurateurs.
