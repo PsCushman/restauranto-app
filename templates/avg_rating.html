@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
     <title>Average Rating</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f2f2f2;
+            background-color: #9c9eca;
         }
         
         h1 {
+            font-family: 'Concert One', cursive;
             font-size: 24px;
-            color: #333;
+            color: #2c2424;
         }
         
         p {
+            font-family: 'Concert One', cursive;
             margin-top: 20px;
             font-size: 18px;
-            color: #555;
+            color: #2c2424;
         }
     </style>
 </head>
 <body>
     <h1>Average Rating</h1>
-    <p>For {{ address }}, the average rating is: {{ avg_rating }}</p>
+    <p>For {{ address }}:<p>
+    </p>The average Yelp rating is: {{ avg_rating }}</p>
 </body>
 </html>

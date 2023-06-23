@@ -121,12 +121,18 @@ def restaurant_types():
         restaurants = fetch_restaurants(latitude, longitude)
 
         if restaurants:
-            restaurant_types = [(restaurant.get('categories')[0]['title'], 1) for restaurant in restaurants if restaurant.get('categories')]
-            restaurant_types = list(set(restaurant_types))
+            restaurant_counts = {}
+            for restaurant in restaurants:
+                categories = restaurant.get('categories', [])
+                for category in categories:
+                    title = category.get('title')
+                    restaurant_counts[title] = restaurant_counts.get(title, 0) + 1
 
-            return render_template('restaurant_types.html', restaurant_types=restaurant_types)
-    else:
-        return redirect(url_for('restaurant_info'))
+            sorted_counts = dict(sorted(restaurant_counts.items(), key=lambda x: x[1], reverse=True))
+
+            return render_template('restaurant_types.html', restaurant_counts=sorted_counts)
+
+    return redirect(url_for('restaurant_info'))
     
 @app.route('/avg_rating')
 def avg_rating():

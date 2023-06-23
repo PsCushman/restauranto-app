@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
     <title>Restaurant Types</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f2f2f2;
+            background-color: #9c9eca;
         }
         
         h1 {
+            font-family: 'Concert One', cursive;
+            color: #2c2424;
             font-size: 24px;
             color: #333;
         }
@@ -23,22 +28,12 @@
         li {
             margin: 10px;
         }
-        
-        a {
-            text-decoration: none;
-            color: #555;
-            font-weight: bold;
-        }
-        
-        a:hover {
-            color: #d4af37;
-        }
     </style>
 </head>
 <body>
     <h1>Restaurant Types</h1>
     <ul>
-        {% for type, count in restaurant_types %}
+        {% for type, count in restaurant_counts.items() %}
         <li>{{ type }} ({{ count }})</li>
         {% endfor %}
     </ul>
