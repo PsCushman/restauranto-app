@@ -5,8 +5,8 @@
 import requests
 import secrets
 from flask import Flask, render_template, request, session, redirect, url_for
-import requests
 from api_keys import yelp_key, google_maps_key
+
 
 app = Flask(__name__)
 
@@ -20,7 +20,7 @@ base_url = 'https://api.yelp.com/v3/businesses/search'
 geocoding_url = 'https://maps.googleapis.com/maps/api/geocode/json'
 
 #################################################
-# Flask Routes
+# Flask Functions
 #################################################
 
 def fetch_restaurants(latitude, longitude):
@@ -68,8 +68,29 @@ def geocode_address(address):
     else:
         return None
 
-@app.route('/')
+#################################################
+# Flask Routes
+#################################################
+
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST':
+        address = request.form.get('address')
+        session['address'] = address
+        return redirect(url_for('home'))
+
+    address = session.get('address')
+
+    if address:
+        location = geocode_address(address)
+
+        if location:
+            latitude, longitude = location
+
+            print(latitude, longitude)  # Add this line to check the values
+
+            return render_template('index.html', latitude=latitude, longitude=longitude)
+
     return render_template('index.html')
 
 @app.route('/restaurant_info', methods=['GET', 'POST'])
@@ -81,6 +102,19 @@ def restaurant_info():
             return redirect(url_for('restaurant_info'))
         else:
             return 'Please provide an address.'
+
+    address = session.get('address')
+
+    if address:
+        location = geocode_address(address)
+
+        if location:
+            latitude, longitude = location
+
+            print(latitude, longitude)  # Add this line to check the values
+
+            return render_template('index.html', latitude=latitude, longitude=longitude)
+
     return render_template('index.html')
 
 @app.route('/restaurant_names')
@@ -164,6 +198,10 @@ def avg_rating():
             return render_template('avg_rating.html', avg_rating=avg_rating, address=address)
     else:
         return redirect(url_for('restaurant_info'))
+    
+@app.route('/property_information')
+def property_information():
+    return render_template('property_information.html')
 
 # Run the application
 if __name__ == "__main__":

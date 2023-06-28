@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="jumbotron">
@@ -12,21 +16,36 @@
         <p class="lead">Gather data, gather intel, gather insight...</p>
     </div>
     <br>
-    <form id="restaurantForm" action="/restaurant_info" method="POST">
+    <div>
+        <form id="restaurantForm" action="/restaurant_info" method="POST">
+            <br>
+            <p>Enter an address to check out your competition:</p>
+            <br>
+            <input type="text" name="address" class="input-box" placeholder="Enter an address" required>
+            <br>
+            <br>
+            <input type="submit" value="INITIALIZE" class="submit-button">
+            <br>
+        </form>
         <br>
-        <p>Enter an address to check out your competition:</p>
+        <p>Choose one of the following options:</p>
         <br>
-        <input type="text" name="address" class="input-box" placeholder="Enter an address" required>
+        <a href="{{ url_for('restaurant_names') }}" class="button">Restaurant Names</a>
+        <a href="{{ url_for('restaurant_types') }}" class="button">Restaurant Types</a>
+        <a href="{{ url_for('avg_rating') }}" class="button">Average Rating</a>
         <br>
-        <br>
-        <input type="submit" value="INITIALIZE" class="submit-button">
-        <br>
-    </form>
+        <a href="{{ url_for('property_information') }}" class="button">Property Information</a>
+    </div>
     <br>
-    <p>Choose one of the following options:</p>
+    <div id="map" class="map"></div>
     <br>
-    <a href="{{ url_for('restaurant_names') }}" class="button">Restaurant Names</a>
-    <a href="{{ url_for('restaurant_types') }}" class="button">Restaurant Types</a>
-    <a href="{{ url_for('avg_rating') }}" class="button">Average Rating</a>
-</body>
-</html>
+    <br>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="text/javascript"> 
+        var latitude = "{{ latitude }}";
+        var longitude = "{{ longitude }}";
+        console.log(latitude, longitude);
+    </script>
+    <script src="{{ url_for('static', filename='maps.js') }}"></script>
+    </body>
+    </html>
