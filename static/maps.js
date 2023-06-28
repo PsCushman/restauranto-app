@@ -26,20 +26,24 @@ function initMap() {
     console.log('initMap');
 
     // Check if address, latitude, and longitude are available
-    
     if (latitude && longitude) {
+        console.log('Latitude:', latitude);
+        console.log('Longitude:', longitude);
+
         var lat = parseFloat(latitude);
         var long = parseFloat(longitude);
         updateMap(lat, long);
     }
 
-    if (restaurants && Array.isArray(restaurants)) {
-        restaurants.forEach(function(restaurant) {
-            var marker = L.marker([restaurant.latitude, restaurant.longitude]).addTo(map);
+    if (restaurantData && Array.isArray(restaurantData)) {
+        console.log('Restaurant Data:', restaurantData);
+
+        restaurantData.forEach(function(restaurant) {
+            var marker = L.marker([restaurant.coordinates.latitude, restaurant.coordinates.longitude]).addTo(map);
             marker.bindPopup(restaurant.name);
         });
     }
-};
+}
 
 function updateMap(lat, long) {
     var map = mapsRef.pop();

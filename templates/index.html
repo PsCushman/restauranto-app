@@ -44,9 +44,10 @@
     <script type="text/javascript"> 
         var latitude = "{{ latitude }}";
         var longitude = "{{ longitude }}";
-        var restaurants = "{{ restaurants }}";
-        console.log(latitude, longitude, restaurants);
+        var restaurantData = {{ restaurants|tojson }};
+        console.log(latitude, longitude);
+        console.log(restaurantData);
     </script>
     <script src="{{ url_for('static', filename='maps.js') }}"></script>
-    </body>
-    </html>
+</body>
+</html>
