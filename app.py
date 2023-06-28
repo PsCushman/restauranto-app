@@ -89,7 +89,9 @@ def home():
 
             print(latitude, longitude)  # Add this line to check the values
 
-            return render_template('index.html', latitude=latitude, longitude=longitude)
+            restaurants = fetch_restaurants(latitude, longitude)
+
+            return render_template('index.html', latitude=latitude, longitude=longitude, restaurants=restaurants)
 
     return render_template('index.html')
 
@@ -113,7 +115,9 @@ def restaurant_info():
 
             print(latitude, longitude)  # Add this line to check the values
 
-            return render_template('index.html', latitude=latitude, longitude=longitude)
+            restaurants = fetch_restaurants(latitude, longitude)
+
+            return render_template('index.html', latitude=latitude, longitude=longitude, restaurants=restaurants)
 
     return render_template('index.html')
 

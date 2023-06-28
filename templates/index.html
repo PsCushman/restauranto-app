@@ -44,7 +44,8 @@
     <script type="text/javascript"> 
         var latitude = "{{ latitude }}";
         var longitude = "{{ longitude }}";
-        console.log(latitude, longitude);
+        var restaurants = "{{ restaurants }}";
+        console.log(latitude, longitude, restaurants);
     </script>
     <script src="{{ url_for('static', filename='maps.js') }}"></script>
     </body>

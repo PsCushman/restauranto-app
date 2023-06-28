@@ -32,6 +32,13 @@ function initMap() {
         var long = parseFloat(longitude);
         updateMap(lat, long);
     }
+
+    if (restaurants && Array.isArray(restaurants)) {
+        restaurants.forEach(function(restaurant) {
+            var marker = L.marker([restaurant.latitude, restaurant.longitude]).addTo(map);
+            marker.bindPopup(restaurant.name);
+        });
+    }
 };
 
 function updateMap(lat, long) {
